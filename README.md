@@ -104,25 +104,6 @@ result = response.json()
 print(result["draft_content"])
 ```
 
-### Option 2: Direct Python Function
-
-```python
-from main import generate_document
-
-document = generate_document(
-    template_type="NDA",
-    corporate_context="SaaS AI Platform",
-    country="India",
-    company_name="TechCorp India Pvt Ltd",
-    registered_address="123 Business Park, Bangalore, Karnataka 560001",
-    reg_number="U72900KA2020PTC123456",
-    signer="John Doe",
-    counterparty_name="ABC Consulting Services"
-)
-
-print(document)
-```
-
 ### Available Template Types
 
 - **NDA**: Non-Disclosure Agreement
@@ -147,6 +128,39 @@ print(document)
   - **Important:** You can include specific details here like counterparty names, employee details, job titles, salary information, resolution details, etc. The AI will extract and use relevant information from this field.
 
 **Note:** The model is simplified to use only core fields. Additional details should be included in the `corporate_context` field, and the AI will intelligently extract and use them in the generated document.
+
+## Testing in Postman
+
+Your API is deployed at: **https://legaldrafts.onrender.com**
+
+### Quick Test Steps:
+
+1. **Open Postman**
+2. **Create New Request:**
+   - Method: `POST`
+   - URL: `https://legaldrafts.onrender.com/api/generate-legal-draft`
+3. **Set Headers:**
+   - Key: `Content-Type`
+   - Value: `application/json`
+4. **Add Body (raw JSON):**
+   ```json
+   {
+     "template_type": "nda",
+     "company_name": "TechCorp India Pvt Ltd",
+     "registration_number": "U72900KA2020PTC123456",
+     "registered_address": "123 Business Park, Bangalore, Karnataka 560066",
+     "directors": ["John Doe"],
+     "country": "India",
+     "corporate_context": "SaaS AI Platform - NDA with ABC Consulting Services"
+   }
+   ```
+5. **Click Send**
+
+**See [POSTMAN_TESTING.md](POSTMAN_TESTING.md) for detailed guide with all examples.**
+
+### Other Endpoints:
+- **Health Check:** `GET https://legaldrafts.onrender.com/health`
+- **API Info:** `GET https://legaldrafts.onrender.com/`
 
 ## Examples
 
@@ -202,11 +216,11 @@ response = requests.post("http://localhost:8000/api/generate-legal-draft", json=
 
 The generator follows strict document structures defined in the system prompt:
 
-- **NDA**: 10 sections including Purpose, Confidential Information, Obligations, Duration, Governing Law
-- **Employment**: 9 sections including Position, Compensation, Confidentiality, IP Assignment, Termination
-- **Service**: 8 sections including Scope, Fees, Independent Contractor status, Liability
-- **Terms**: 9 sections including Services, User Obligations, Payment & Taxes, Liability & Warranty
-- **Board/Shareholder**: Resolution format with authorization clauses
+- **NDA**: 11 sections including Definitions, Exclusions, Obligations, Remedies, Boilerplate
+- **Employment**: 11 sections including Appointment, Compensation, Confidentiality, IP Assignment, Restrictive Covenants
+- **Service**: 13 sections including Scope, Fees, IP Ownership, Indemnification, Liability Caps
+- **Terms**: 14 sections including Services, User Accounts, Payment, Data Protection, Refunds
+- **Board/Shareholder**: Formal resolution format with meeting details and certifications
 
 ## Context Adaptation
 
@@ -221,8 +235,9 @@ The generator automatically adapts clauses based on corporate context:
 The generator cites appropriate laws:
 
 - **India**: Information Technology Act 2000, Indian Contract Act 1872, Arbitration and Conciliation Act 1996
-- **USA**: State-specific laws (default: Delaware), At-Will Employment provisions
-- **UK/EU**: GDPR, Contracts (Rights of Third Parties) Act 1999
+- **USA**: State-specific laws (default: Delaware), At-Will Employment provisions, Defend Trade Secrets Act
+- **UK/EU**: GDPR, Contracts (Rights of Third Parties) Act 1999, EU Consumer Rights Directive
+- **Netherlands**: Dutch Civil Code (Burgerlijk Wetboek)
 
 ## API Features
 
@@ -240,15 +255,11 @@ The FastAPI version (`api.py`) includes:
 - Always review generated documents with a qualified legal professional before use
 - Documents are generated based on templates and may require customization
 - Ensure all placeholders are filled before finalizing documents
-- The system uses GPT-4o by default for higher quality output (in API) or GPT-4 (in main.py)
+- The system uses GPT-4o by default for higher quality output
 - The API version uses temperature 0.2 for more consistent legal text
 
 ## License
 
 This project is provided as-is for educational and development purposes.
-
 #   L e g a l _ D r a f t s  
- #   L e g a l _ D r a f t s  
- #   L e g a l _ D r a f t s  
- #   L e g a l D r a f t s  
  
